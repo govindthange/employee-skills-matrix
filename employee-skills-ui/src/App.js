@@ -1,24 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
+import EmpDetails from './components/emp-details';
+import FilterComponent from './components/filter-component';
+import { Container, Grid, Button } from '@mui/material';
 
 function App() {
+  const empDetails = {
+    id: "1",
+    name: "pravin"
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth="xl">
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6} my={2}>
+          <Button variant="outlined">Upload CSV</Button>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <FilterComponent></FilterComponent>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <EmpDetails {...empDetails} />
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 
