@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import EmpDetails from './components/emp-details';
 import FilterComponent from './components/filter-component';
+import Ag from './Ag'
 import { Container, Grid, Button } from '@mui/material';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <EmpDetails {...empDetails} />
         </Grid>
       </Grid>
+      <Ag />
     </Container>
   );
 }
