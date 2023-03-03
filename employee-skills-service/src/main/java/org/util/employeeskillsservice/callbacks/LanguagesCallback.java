@@ -1,6 +1,5 @@
 package org.util.employeeskillsservice.callbacks;
 
-import org.util.employeeskillsservice.model.CellCallBack;
 import org.util.employeeskillsservice.model.Skill;
 import org.util.employeeskillsservice.model.Tags;
 
