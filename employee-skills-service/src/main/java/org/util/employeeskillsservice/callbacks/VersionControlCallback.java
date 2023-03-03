@@ -1,10 +1,8 @@
 package org.util.employeeskillsservice.callbacks;
 
-import org.util.employeeskillsservice.model.CellCallBack;
 import org.util.employeeskillsservice.model.Skill;
 import org.util.employeeskillsservice.model.Tags;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
