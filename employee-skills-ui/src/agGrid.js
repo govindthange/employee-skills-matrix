@@ -1,5 +1,5 @@
 import React, { useState, useEffect, } from 'react';
-import { Button } from '@mui/material'
+import { Link } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -35,6 +35,7 @@ function dataAfterFilter() {
 
   const exportFilteredData = () => {
     dataAfterFilter();
+    console.log("RowData", rowData);
     const filteredData = temp;
     const worksheet = XLSX.utils.json_to_sheet(filteredData);
     const workbook = XLSX.utils.book_new();
@@ -55,7 +56,10 @@ function dataAfterFilter() {
 
   return (
     <div>
-      <div className="ag-theme-alpine" style={{ height: '70vh', width: '100%'}}>
+      <div style={{marginTop: '-30px', marginBottom: '20px'}}>
+        <Link variant="outlined" onClick = { exportFilteredData } style={{ float: 'right', cursor: 'pointer' }}>Export</Link><br/><br/>
+      </div>
+      <div className="ag-theme-alpine" style={{ height: '70vh', width: '100%', marginBottom: '5rem' }}>
         <AgGridReact
         rowData = {rowData}
         onGridReady = {onGridReady}
@@ -64,10 +68,8 @@ function dataAfterFilter() {
         animateRows = {true}
         rowSelection={'single'}
         pagination = {true} 
-        paginationPageSize={50} />
+        paginationPageSize = {50} />
       </div>
-      {/* <button onClick={exportFilteredData} style={{marginBottom: '40px', marginTop: '15px'}}>Download Data</button> */}
-      <Button variant="outlined" onClick = { exportFilteredData }>Download Data</Button>
     </div>
   );
 }

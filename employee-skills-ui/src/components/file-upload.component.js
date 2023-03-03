@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, Input, Link } from '@mui/material';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import axios from 'axios';
 
@@ -26,22 +26,24 @@ export default function FileUploadComponent() {
                 "Content-Type": "multipart/form-data",
             },
             onUploadProgress: (e) => {
-                setProgress(Math.round( (e.loaded*100) / e.total ));
+                setProgress(Math.round((e.loaded * 100) / e.total));
             }
         })
-        .then((res) => { console.log(res)})
-        .catch((err) => {console.log(err)});
+            .then((res) => { console.log(res) })
+            .catch((err) => { console.log(err) });
     };
 
     return (
-        <div>
-            <input type="file" onChange={handleFileChange} />
+        <div style={{ marginBottom: '-40px', marginTop: '75px'}}>
+            <Input className='primary' type="file" disableUnderline={true} onChange={handleFileChange} />
+            <Link style={{ cursor: 'pointer' }} onClick={handleUploadClick}>Upload</Link>
 
-            <div>{file && `${file.name} - ${file.type}`}</div>
-
-            <button onClick={handleUploadClick}>Upload</button>
-
-            <LinearProgress variant="determinate" value={progress} />
+            <div style={{ marginBottom: '5px' }}>
+                {file && `${file.name} - ${file.type}`}
+            </div>
+            <div style={{maxWidth: '180px'}}>
+                {progress != 0 ? <LinearProgress variant="determinate" value={progress} /> : <></>}
+            </div>
 
         </div>
     );
