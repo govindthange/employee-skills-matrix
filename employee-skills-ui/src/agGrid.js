@@ -1,22 +1,31 @@
-import React, { useState, useEffect, } from 'react';
-import { Link } from '@mui/material'
+import React, { useState, useEffect, useCallback, useRef, useMemo, } from 'react';
+import { Link, TextField } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-// import 'ag-grid-community/styles/ag-theme-alpine-dark.css';
 import * as XLSX from 'xlsx';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LIGHT_THEME } from './redux/theme/themeConstants';
+import { progressbarAction } from './redux';
 
-function App() {
-  const [rowData, setRowData] = useState([]);
+import { connect } from 'react-redux';
+import { fetchEmployeeData } from './redux';
+import EmployeeDetailContainer from './components/employee-detail/EmployeeDetailContainer';
+
+function App({employees, fetchEmployeeData}) {
+  // const [rowData, setRowData] = useState([]);
+  const gridRef = useRef();
   const [gridApi, setGridApi] = useState(null);
+  const dispatch = useDispatch();
+  const rowData = useSelector(state => state.employee.employees)
   let temp = [];
 
   useEffect(() => {
-    fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
-    .then(result => result.json())
-    .then(rowData => setRowData(rowData))
+    // fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
+    // .tap(() => dispatch(progressbarAction()))
+    // .then(result => result.json())
+    // .then(rowData => setRowData(rowData))
+    fetchEmployeeData()
   }, []);
 
   const defaultColDef = {
@@ -47,26 +56,51 @@ function dataAfterFilter() {
   };
 
   const columns = [
-    { field: 'athlete', minWidth: 150, filter: 'agTextColumnFilter'},
-    { field: 'age', filter: 'agNumberColumnFilter'},
-    { field: 'country', filter: 'agTextColumnFilter' },
-    { field: 'year', filter: 'agNumberColumnFilter' },
-    { field: 'sport', filter: 'agTextColumnFilter' },
-    { field: 'gold', filter: 'agNumberColumnFilter' },
-    { field: 'silver', filter: 'agNumberColumnFilter' },
-    { field: 'bronze', filter: 'agNumberColumnFilter' },
+    { field: 'id', maxWidth: 70},
+    { field: 'code', maxWidth: 100, filter: 'agNumberColumnFilter'},
+    { field: 'name', filter: 'agTextColumnFilter' },
+    { field: 'localtion', maxWidth: 150, filter: 'agTextColumnFilter' },
+    { field: 'designation', filter: 'agTextColumnFilter' },
+    { field: 'mobileNumber', filter: 'agTextColumnFilter' },
+    { field: 'githubUrl', filter: 'agTextColumnFilter' },
+    { field: 'linkedinUrl', filter: 'agTextColumnFilter' },
   ];
 
-  const theme = useSelector(state => state.theme);
+  const onSelectionChanged = useCallback(() => {
+    const selectedRows = gridRef.current.api.getSelectedRows();
+    console.log("row selected", selectedRows)
+  }, []);
+
+  const onFilterTextBoxChanged = useCallback(() => {
+    gridRef.current.api.setQuickFilter(
+      document.getElementById('filter-text-box').value
+    );
+  }, []);
+
+
+  const theme = useSelector(state => state.theme.theme);
   const themeClassName = (theme === LIGHT_THEME) ?' ag-theme-alpine' : 'ag-theme-alpine-dark'
 
-  return (
+  return employees.loading ? (
+    <h2>Loading</h2>
+  ) : employees.error ? (
+    <h2> {employees.error} </h2>
+  ) : (
+
     <div>
-      <div style={{marginTop: '-30px', marginBottom: '20px'}}>
-        <Link variant="outlined" onClick = { exportFilteredData } style={{ float: 'right', cursor: 'pointer' }}>Export</Link><br/><br/>
+      <div style={{ padding: '1rem 0em',}} >
+      <TextField fullWidth id="filter-text-box" label="search" variant="outlined" onInput={onFilterTextBoxChanged}/>
       </div>
-      <div className={themeClassName} style={{ height: '70vh', width: '100%', marginBottom: '5rem' }}>
+     
+      {/* <input
+            type="text"
+            id="filter-text-box"
+            placeholder="Filter..."
+            // onInput={onFilterTextBoxChanged}
+          /> */}
+      <div className={themeClassName} style={{ height: '80vh', width: '100%', marginBottom: '2rem' }}>
         <AgGridReact
+        ref={gridRef}
         rowData = {rowData}
         onGridReady = {onGridReady}
         columnDefs = {columns}
@@ -74,10 +108,23 @@ function dataAfterFilter() {
         animateRows = {true}
         rowSelection={'single'}
         pagination = {true} 
+        onSelectionChanged={onSelectionChanged}
         paginationPageSize = {50} />
       </div>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    employees: state.employee
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchEmployeeData: () => dispatch(fetchEmployeeData())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
