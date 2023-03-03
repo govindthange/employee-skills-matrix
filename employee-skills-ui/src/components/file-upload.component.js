@@ -36,6 +36,7 @@ export default function FileUploadComponent() {
     return (
         <div style={{ marginBottom: '-40px', marginTop: '75px'}}>
             <Input className='primary' type="file" disableUnderline={true} onChange={handleFileChange} />
+           
             <Link style={{ cursor: 'pointer' }} onClick={handleUploadClick}>Upload</Link>
 
             <div style={{ marginBottom: '5px' }}>

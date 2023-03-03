@@ -3,7 +3,10 @@ import { Link } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+// import 'ag-grid-community/styles/ag-theme-alpine-dark.css';
 import * as XLSX from 'xlsx';
+import { useSelector } from 'react-redux';
+import { LIGHT_THEME } from './redux/theme/themeConstants';
 
 function App() {
   const [rowData, setRowData] = useState([]);
@@ -54,12 +57,15 @@ function dataAfterFilter() {
     { field: 'bronze', filter: 'agNumberColumnFilter' },
   ];
 
+  const theme = useSelector(state => state.theme);
+  const themeClassName = (theme === LIGHT_THEME) ?' ag-theme-alpine' : 'ag-theme-alpine-dark'
+
   return (
     <div>
       <div style={{marginTop: '-30px', marginBottom: '20px'}}>
         <Link variant="outlined" onClick = { exportFilteredData } style={{ float: 'right', cursor: 'pointer' }}>Export</Link><br/><br/>
       </div>
-      <div className="ag-theme-alpine" style={{ height: '70vh', width: '100%', marginBottom: '5rem' }}>
+      <div className={themeClassName} style={{ height: '70vh', width: '100%', marginBottom: '5rem' }}>
         <AgGridReact
         rowData = {rowData}
         onGridReady = {onGridReady}

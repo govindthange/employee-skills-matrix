@@ -3,6 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import ThemeSelector from './theme-selector/ThemeSelector';
 
 
 function Navbar() {
@@ -15,10 +16,11 @@ function Navbar() {
             variant="h4"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block', textAlign: 'center', padding: '25px' } }}
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block', textAlign: 'center', padding: '15px' } }}
           >
-            Winsoft Technologies.
+            Winsoft Technologies
           </Typography>
+          <ThemeSelector/>
         </Toolbar>
       </AppBar>
     </Box>
