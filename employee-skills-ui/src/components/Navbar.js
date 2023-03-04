@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
 
-      <AppBar position="fixed">
+      <AppBar position="static">
         <Toolbar>
           <Typography
             variant="h4"
