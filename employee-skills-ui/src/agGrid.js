@@ -88,7 +88,7 @@ function dataAfterFilter() {
   ) : (
 
     <div>
-      <div style={{ padding: '1rem 0em',}} >
+      <div style={{ padding: '1rem 0em'}} >
       <TextField fullWidth id="filter-text-box" label="search" variant="outlined" onInput={onFilterTextBoxChanged}/>
       </div>
      
