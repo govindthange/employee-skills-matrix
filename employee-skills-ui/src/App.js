@@ -29,11 +29,6 @@ const router = createBrowserRouter([
 ]);
 
 
-
-const darkTheme = getThemeObj(red[500], green[500], 'dark')
-
-const lightTheme = getThemeObj(red[500], green[500], 'light')
-
 function App(props) {
 
 
@@ -47,7 +42,6 @@ function App(props) {
   const t = (mode === LIGHT_THEME) ? 'light' : 'dark';
 
   const themeColor = useSelector(state => state.theme.theme);
-  console.log("app.js");
   const derivedTheme = getThemeObj(themeColor.primaryColor, themeColor.secondaryColor, t)
   return (
 

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Divider, List, ListItemButton, ListItemIcon, ListItemText, Paper, TextField } from "@mui/material";
+import { Divider, InputAdornment, List, ListItemButton, ListItemIcon, ListItemText, Paper, TextField } from "@mui/material";
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { useDispatch } from 'react-redux';
 import { selectEmployee } from '../../redux';
+import SearchIcon from '@mui/icons-material/Search';
 
 function ListRendere({ employees }) {
 
@@ -48,7 +49,18 @@ function ListRendere({ employees }) {
     return (
         <Paper variant="elevation" sx={{p: 2}} elevation={2}>
             <div style={{ padding: '1rem 0em' }} key="search-field">
-                <TextField fullWidth id="filter-text-box" label="search" variant="outlined" onInput={onFilterTextBoxChanged} />
+                <TextField
+                    fullWidth
+                    id="filter-text-box"
+                    label="search"
+                    variant="outlined"
+                    onInput={onFilterTextBoxChanged}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">
+                            <SearchIcon color="secondary"/>
+                        </InputAdornment>,
+                      }}
+                />
             </div>
             <List component="nav" >
                 {empNameList}

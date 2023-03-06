@@ -2,7 +2,6 @@ import { createTheme } from "@mui/material";
 import { amber, deepPurple } from "@mui/material/colors";
 
 export const getThemeObj = (primaryColor, secondaryColor, mode) => {
-  console.log(primaryColor, secondaryColor, mode);
     return createTheme({
         palette: {
         mode: mode,

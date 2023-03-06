@@ -1,24 +1,21 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, } from 'react';
-import { Link, TextField } from '@mui/material'
+import { InputAdornment, Link, TextField } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import * as XLSX from 'xlsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { LIGHT_THEME } from './redux/theme/themeConstants';
-import { progressbarAction } from './redux';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { connect } from 'react-redux';
 import { fetchEmployeeData } from './redux';
-import EmployeeDetailContainer from './components/employee-detail/EmployeeDetailContainer';
 
 function App({employees, fetchEmployeeData}) {
   // const [rowData, setRowData] = useState([]);
   const gridRef = useRef();
   const [gridApi, setGridApi] = useState(null);
-  const dispatch = useDispatch();
   const rowData = useSelector(state => state.employee.employees)
-  console.log("RowData", rowData);
   let temp = [];
 
   useEffect(() => {
@@ -64,7 +61,6 @@ function dataAfterFilter() {
 
   const onSelectionChanged = useCallback(() => {
     const selectedRows = gridRef.current.api.getSelectedRows();
-    console.log("row selected", selectedRows)
   }, []);
 
   const onFilterTextBoxChanged = useCallback(() => {
@@ -89,7 +85,18 @@ function dataAfterFilter() {
 
     <div>
       <div style={{ padding: '1rem 0em'}} >
-      <TextField fullWidth id="filter-text-box" label="search" variant="outlined" onInput={onFilterTextBoxChanged}/>
+      <TextField
+          fullWidth
+          id="filter-text-box"
+          label="search"
+          variant="outlined"
+          onInput={onFilterTextBoxChanged}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">
+                <SearchIcon color="secondary"/>
+            </InputAdornment>,
+          }}
+      />
       </div>
      
       {/* <input
