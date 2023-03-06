@@ -1,9 +1,6 @@
 import { HIDDEN, VISSBLE } from "./progressbarConstants";
 import {TOGGLE} from './progressbarTypes';
 
-
-
-
 const initialState = {
     visibility: HIDDEN
 }

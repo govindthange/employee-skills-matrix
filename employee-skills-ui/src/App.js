@@ -1,93 +1,91 @@
-import logo from './logo.svg';
 import './App.css';
-import EmpDetails from './components/emp-details';
-import FilterComponent from './components/filter-component';
-import Navbar from './components/Navbar'
+import Navbar from './components/nav-bar/Navbar'
 import AgGrid from './agGrid'
-import FileUploadComponent from './components/file-upload.component';
-import { Container, Grid, Button, ThemeProvider, createTheme, CssBaseline, Fab, SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material';
-import { Provider, useSelector } from 'react-redux';
-import store from './redux/store';
-import { LIGHT_THEME } from './redux/theme/themeConstants';
-import { useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
-
-import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import { Container, Grid, Button, ThemeProvider, createTheme, CssBaseline, Fab, SpeedDial, SpeedDialIcon, SpeedDialAction, useScrollTrigger } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { DARK_THEME, LIGHT_THEME } from './redux/theme/themeConstants';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import SaveIcon from '@mui/icons-material/Save';
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import EmployeeDetailContainer from './components/employee-detail/EmployeeDetailContainer';
+import React from 'react';
+import { blue, green, purple, red } from '@mui/material/colors';
+import { getThemeObj } from './utils/utils';
+import { palette } from '@mui/system';
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <AgGrid />,
   },
-});
-
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light',
-  },
-});
-
-function App() {
-  const empDetails = {
-    id: "1",
-    name: "pravin"
+  {
+    path:"/employee-details",
+    element: <EmployeeDetailContainer />
   }
+]);
 
-  // const [selectedtheme, updateSelectedTheme] = useState(lightTheme);
+
+
+const darkTheme = getThemeObj(red[500], green[500], 'dark')
+
+const lightTheme = getThemeObj(red[500], green[500], 'light')
+
+function App(props) {
+
+
   const actions = [
     { icon: <FileUploadIcon />, name: 'Upload CSV' },
     { icon: <SaveIcon />, name: 'Download' },
-    // { icon: <PrintIcon />, name: 'Print' },
-    // { icon: <ShareIcon />, name: 'Share' },
   ];
 
 
-  const theme = useSelector(state => state.theme.theme);
-  const t = (theme === LIGHT_THEME) ? lightTheme : darkTheme;
+  const mode = useSelector(state => state.theme.mode);
+  const t = (mode === LIGHT_THEME) ? 'light' : 'dark';
+
+  const themeColor = useSelector(state => state.theme.theme);
+  console.log("app.js");
+  const derivedTheme = getThemeObj(themeColor.primaryColor, themeColor.secondaryColor, t)
   return (
 
-    <ThemeProvider theme={t}>
+    <ThemeProvider theme={derivedTheme}>
       <CssBaseline />
+      <Container maxWidth={false} sx={{ p: 0}} disableGutters={true}>
       <Navbar />
-      <Container maxWidth="xl">
-      
+      <Container maxWidth={false} sx={{ pr: 20}}>
+
         <Grid container spacing={2}>
-          {/* <Grid item xs={12} md={6} my={2}>
-            <FileUploadComponent></FileUploadComponent>
-          </Grid> */}
           <Grid item xs={12} md={12} >
-            <AgGrid />
+          <RouterProvider router={router} />
           </Grid>
           <SpeedDial
             ariaLabel="SpeedDial basic example"
-            sx={{ position: 'absolute', bottom: 16, right: 16 }}
+            sx={{ position: 'absolute', bottom: 16, right: 16,'& .MuiFab-primary': { backgroundColor: 'secondary.main' } }}
             icon={<SpeedDialIcon />}
+            
           >
             {actions.map((action) => (
               <SpeedDialAction
                 key={action.name}
                 icon={action.icon}
                 tooltipTitle={action.name}
+                
               />
             ))}
           </SpeedDial>
-          {/* <Grid container
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center">
-            <Fab color="secondary" aria-label="add">
-              <AddIcon />
-            </Fab>
-          </Grid> */}
         </Grid>
       </Container>
+      </Container>
+     
+      
     </ThemeProvider>
 
   );
 }
+
+
 
 export default App;

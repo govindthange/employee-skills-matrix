@@ -18,13 +18,10 @@ function App({employees, fetchEmployeeData}) {
   const [gridApi, setGridApi] = useState(null);
   const dispatch = useDispatch();
   const rowData = useSelector(state => state.employee.employees)
+  console.log("RowData", rowData);
   let temp = [];
 
   useEffect(() => {
-    // fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
-    // .tap(() => dispatch(progressbarAction()))
-    // .then(result => result.json())
-    // .then(rowData => setRowData(rowData))
     fetchEmployeeData()
   }, []);
 
@@ -47,7 +44,6 @@ function dataAfterFilter() {
 
   const exportFilteredData = () => {
     dataAfterFilter();
-    console.log("RowData", rowData);
     const filteredData = temp;
     const worksheet = XLSX.utils.json_to_sheet(filteredData);
     const workbook = XLSX.utils.book_new();
@@ -77,8 +73,12 @@ function dataAfterFilter() {
     );
   }, []);
 
+  const onRowDoubleClicked = useCallback(() => {
+    console.log("double click on row");
+  });
 
-  const theme = useSelector(state => state.theme.theme);
+
+  const theme = useSelector(state => state.theme.mode);
   const themeClassName = (theme === LIGHT_THEME) ?' ag-theme-alpine' : 'ag-theme-alpine-dark'
 
   return employees.loading ? (
@@ -98,13 +98,14 @@ function dataAfterFilter() {
             placeholder="Filter..."
             // onInput={onFilterTextBoxChanged}
           /> */}
-      <div className={themeClassName} style={{ height: '80vh', width: '100%', marginBottom: '2rem' }}>
+      <div className={themeClassName} style={{ height: '74vh', width: '100%', marginBottom: '2rem'}} >
         <AgGridReact
         ref={gridRef}
         rowData = {rowData}
         onGridReady = {onGridReady}
         columnDefs = {columns}
         defaultColDef = {defaultColDef}
+        onRowDoubleClicked = {onRowDoubleClicked}
         animateRows = {true}
         rowSelection={'single'}
         pagination = {true} 

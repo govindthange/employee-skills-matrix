@@ -3,10 +3,9 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import ThemeSelector from './theme-selector/ThemeSelector';
-import ProgressBar from './progress-bar/ProgressBar';
-import { CssBaseline, Drawer } from '@mui/material';
-
+import ThemeSelector from '../theme-selector/ThemeSelector';
+import ProgressBar from '../progress-bar/ProgressBar';
+import NavbarMenu from './NavbarMenu';
 
 
 function Navbar() {
@@ -24,6 +23,7 @@ function Navbar() {
           >
             Winsoft Technologies
           </Typography>
+         <NavbarMenu/>
           <ThemeSelector/>
         </Toolbar>
         <ProgressBar/>

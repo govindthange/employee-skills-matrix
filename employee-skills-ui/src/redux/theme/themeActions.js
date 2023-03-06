@@ -1,7 +1,14 @@
-import { TOGGELE } from "./themeTypes"
+import { TOGGELE_MODE, TOGGLE_COLOR } from "./themeTypes"
 
-export const toggleTheme = () => {
+export const toggleThemeMode = () => {
     return {
-        type: TOGGELE
+        type: TOGGELE_MODE
+    }
+}
+
+export const toggleThemeColor = colorTheme => {
+    return {
+        type: TOGGLE_COLOR,
+        payload: colorTheme
     }
 }
