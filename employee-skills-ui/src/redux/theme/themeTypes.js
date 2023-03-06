@@ -1,1 +1,2 @@
-export const TOGGELE = 'TOGGELE';
+export const TOGGELE_MODE = 'TOGGELE_MODE';
+export const TOGGLE_COLOR = 'TOGGLE_COLOR';

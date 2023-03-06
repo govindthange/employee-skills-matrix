@@ -1,16 +1,22 @@
+import { defaultThemeColor } from "../../utils/utils";
 import { DARK_THEME, LIGHT_THEME } from "./themeConstants";
-import { TOGGELE } from "./themeTypes";
+import { TOGGELE_MODE, TOGGLE_COLOR } from "./themeTypes";
 
 const initialState = {
-    theme: "light"
+    mode: "LIGHT_THEME",
+    theme: {primaryColor: defaultThemeColor.primacyColor, secondaryColor: defaultThemeColor.secondaryColor}
 }
 
 const themeReducer = (state = initialState, action)  => {
     switch (action.type) {
-        case TOGGELE: return {
+        case TOGGELE_MODE: return {
             ...state,
-            theme: state.theme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME
-        } 
+            mode: state.mode === LIGHT_THEME ? DARK_THEME : LIGHT_THEME,
+        }
+        case TOGGLE_COLOR: return {
+            ...state,
+            theme: action.payload
+        }
         default:
             return state;
     }

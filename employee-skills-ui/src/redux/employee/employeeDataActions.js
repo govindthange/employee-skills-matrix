@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { progressbarAction } from '../progress-bar/progressbarActions';
-import { FETCH_EMPLOYEE_FAILURE, FETCH_EMPLOYEE_REQUEST, FETCH_EMPLOYEE_SUCCESS } from "./employeeDataTypes"
+import { FETCH_EMPLOYEE_FAILURE, FETCH_EMPLOYEE_REQUEST, FETCH_EMPLOYEE_SUCCESS, SELECT_EMPLOYEE } from "./employeeDataTypes"
 
 export const fetchEmployeeDataRequets = () => {
     return {
@@ -23,13 +23,19 @@ export const fetchEmployeeDataFaiure = error => {
     }
 }
 
+export const selectEmployee = employee => {
+    return {
+        type: SELECT_EMPLOYEE,
+        payload: employee
+    }
+}
+
 export const fetchEmployeeData = () => {
     return (dispatch) => {
         dispatch(fetchEmployeeDataRequets);
         dispatch(progressbarAction());
         axios.get("/api/employee")
             .then(res => {
-                console.log(res);
                 dispatch(fetchEmployeeDataSuccess(res.data))
                 dispatch(progressbarAction());
             })

@@ -1,4 +1,4 @@
-import { FETCH_EMPLOYEE_FAILURE, FETCH_EMPLOYEE_REQUEST, FETCH_EMPLOYEE_SUCCESS } from "./employeeDataTypes"
+import { FETCH_EMPLOYEE_FAILURE, FETCH_EMPLOYEE_REQUEST, FETCH_EMPLOYEE_SUCCESS, SELECT_EMPLOYEE } from "./employeeDataTypes"
 
 const initialState = {
     loading: false,
@@ -20,10 +20,15 @@ const employeeReducer = (state = initialState, action) => {
                 error: ''
             }
         case FETCH_EMPLOYEE_FAILURE:
-            return{
+            return {
                 ...state,
                 employees: [],
                 error: action.payload
+            }
+        case SELECT_EMPLOYEE:
+            return {
+                ...state,
+                employee: action.payload
             }
         default: return state
     }
