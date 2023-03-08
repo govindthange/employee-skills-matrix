@@ -1,4 +1,3 @@
-import { Paper, skeletonClasses, Typography } from "@mui/material";
 import BorderedSection from "../bordered-section/BorderedSection";
 import SkillChipList from "./SkillChipList";
 
