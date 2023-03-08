@@ -1,16 +1,10 @@
 package org.util.employeeskillsservice.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -19,14 +13,15 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
+    @Column
     String skill;
+
+    @Column
     String tag;
 
-    // @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    // @JoinColumn(name = "employee_id", nullable = false)
-    // @OnDelete(action = OnDeleteAction.CASCADE)
-    // @JsonIgnore
-    // private Employee employee;
+    @ManyToOne
+    private Employee employee;
+
 
     public String getSkill() {
         return skill;
@@ -38,6 +33,25 @@ public class Skill {
 
     public String getTag() {
         return tag;
+    }
+
+   
+
+    public Skill() {
+    }
+
+    public Skill(Long id, String skill, String tag) {
+        this.id = id;
+        this.skill = skill;
+        this.tag = tag;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setTag(String tag) {

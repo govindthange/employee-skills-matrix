@@ -1,41 +1,65 @@
 package org.util.employeeskillsservice.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    @Column(unique=true)
+
+    public Employee(Long code, String name, String localtion, String designation, String mobileNumber,
+            String yearsOfExperience, String githubUrl, String linkedinUrl, List<Skill> skills) {
+        this.code = code;
+        this.name = name;
+        this.localtion = localtion;
+        this.designation = designation;
+        this.mobileNumber = mobileNumber;
+        this.yearsOfExperience = yearsOfExperience;
+        this.githubUrl = githubUrl;
+        this.linkedinUrl = linkedinUrl;
+        this.skills = skills;
+    }
+
+    public Employee() {
+    }
+
+    @Id
     Long code;
+
+    @Column
     String name;
+
+    @Column
     String localtion;
+
+    @Column
     String designation;
+
+    @Column
     String mobileNumber;
+
+    @Column
     String yearsOfExperience;
+
+    @Column
     String githubUrl;
+
+    @Column
     String linkedinUrl;
 
-    public Long getId() {
-        return id;
-    }
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name ="employee_id")
+    List<Skill> skills = new ArrayList<>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    
 
     public String getLocaltion() {
         return localtion;
@@ -97,10 +121,6 @@ public class Employee {
         this.name = name;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "skill_id", nullable = false)
-    List<Skill> skills = new ArrayList<>();
-
     public Long getCode() {
         return code;
     }
@@ -109,6 +129,7 @@ public class Employee {
         this.code = code;
     }
 
+    
     public List<Skill> getSkills() {
         return skills;
     }
