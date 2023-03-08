@@ -24,4 +24,10 @@ public class EmployeeSkillsController {
     public ResponseEntity<Iterable<Employee>> fetchAllEmployee() {
         return new ResponseEntity<>(service.fetchAll(), HttpStatus.OK);
     }
+
+    @DeleteMapping()
+    public ResponseEntity deleteAllEmployee() {
+        service.deleteAll();
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

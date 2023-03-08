@@ -10,4 +10,5 @@ public interface EmployeeService {
     public Iterable<Employee> fetchAll();
 
     void uploadCsvData(MultipartFile file);
+    void deleteAll();
 }
