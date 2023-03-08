@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, } from 'react';
-import { InputAdornment, Link, TextField } from '@mui/material'
+import { InputAdornment, TextField } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import * as XLSX from 'xlsx';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { LIGHT_THEME } from './redux/theme/themeConstants';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { connect } from 'react-redux';
 import { fetchEmployeeData } from './redux';
+import ChatOnTeams from './components/ChatOnTeams/ChatOnTeams';
 
 function App({employees, fetchEmployeeData}) {
   // const [rowData, setRowData] = useState([]);
@@ -49,7 +50,7 @@ function dataAfterFilter() {
   };
 
   const columns = [
-    { field: 'id', maxWidth: 70},
+    { field: 'Chat',cellRenderer: ChatOnTeams, cellRendererparams: {email: this}, maxWidth: 80},
     { field: 'code', maxWidth: 100, filter: 'agNumberColumnFilter'},
     { field: 'name', filter: 'agTextColumnFilter' },
     { field: 'localtion', maxWidth: 150, filter: 'agTextColumnFilter' },
@@ -57,6 +58,7 @@ function dataAfterFilter() {
     { field: 'mobileNumber', filter: 'agTextColumnFilter' },
     { field: 'githubUrl', filter: 'agTextColumnFilter' },
     { field: 'linkedinUrl', filter: 'agTextColumnFilter' },
+    
   ];
 
   const onSelectionChanged = useCallback(() => {

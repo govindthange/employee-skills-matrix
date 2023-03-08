@@ -1,5 +1,6 @@
 package org.util.employeeskillsservice;
 
+import org.apache.logging.log4j.util.Strings;
 import org.util.employeeskillsservice.callbacks.*;
 import org.util.employeeskillsservice.callbacks.CellCallBack;
 import org.util.employeeskillsservice.model.Employee;
@@ -37,6 +38,12 @@ public class EmployeeSkillCellMapper implements CellMapper<Employee> {
             emp.setName(value);
         }
 
+        if (cell.equalsIgnoreCase("Username")) {
+            if (value.contains("winsoftech.com")) {
+                emp.setOfficeEmailId(value);
+            }
+        }
+
         if (cell.equalsIgnoreCase("Location")) {
             emp.setLocaltion(value);
         }
@@ -59,6 +66,12 @@ public class EmployeeSkillCellMapper implements CellMapper<Employee> {
 
         if (cell.equalsIgnoreCase("LinkedIn Profile URL")) {
             emp.setLinkedinUrl(value);
+        }
+
+        if (cell.equalsIgnoreCase("Office Email ID")) {
+            if (!Strings.isBlank(value)) {
+                emp.setOfficeEmailId(value);
+            }
         }
 
         for (Tags tag : Tags.values()) {

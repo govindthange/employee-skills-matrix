@@ -1,9 +1,9 @@
 import './App.css';
 import Navbar from './components/nav-bar/Navbar'
 import AgGrid from './agGrid'
-import { Container, Grid, Button, ThemeProvider, createTheme, CssBaseline, Fab, SpeedDial, SpeedDialIcon, SpeedDialAction, useScrollTrigger } from '@mui/material';
+import { Container, Grid, ThemeProvider, CssBaseline, SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { DARK_THEME, LIGHT_THEME } from './redux/theme/themeConstants';
+import {  LIGHT_THEME } from './redux/theme/themeConstants';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -12,9 +12,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import EmployeeDetailContainer from './components/employee-detail/EmployeeDetailContainer';
 import React from 'react';
-import { blue, green, purple, red } from '@mui/material/colors';
 import { getThemeObj } from './utils/utils';
-import { palette } from '@mui/system';
 
 
 const router = createBrowserRouter([

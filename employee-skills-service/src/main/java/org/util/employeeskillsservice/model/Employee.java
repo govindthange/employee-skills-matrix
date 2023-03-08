@@ -55,6 +55,17 @@ public class Employee {
     @Column
     String linkedinUrl;
 
+    @Column
+    String officeEmailId;
+
+    public String getOfficeEmailId() {
+        return officeEmailId;
+    }
+
+    public void setOfficeEmailId(String officeEmailId) {
+        this.officeEmailId = officeEmailId;
+    }
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name ="employee_id")
     List<Skill> skills = new ArrayList<>();
