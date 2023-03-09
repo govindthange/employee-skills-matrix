@@ -6,9 +6,10 @@ import SocialMediaLink from "./SocialMediaLinks";
 import Skills from "./Skills";
 function DetailRender() {
     const employee = useSelector(state => state.employee.employee)
-
-    const email ={
-        officeEmailId: employee.officeEmailId
+    const email ={}
+    if (employee != null) {
+        email.officeEmailId = employee.officeEmailId
+        
     }
     
     return employee && Object.keys(employee).length > 0 ? (
