@@ -69,7 +69,7 @@ public class EmployeeSkillCellMapper implements CellMapper<Employee> {
         }
 
         if (cell.equalsIgnoreCase("Office Email ID")) {
-            if (!Strings.isBlank(value)) {
+            if (!Strings.isBlank(value) && value.contains("winsoftech.com")) {
                 emp.setOfficeEmailId(value);
             }
         }

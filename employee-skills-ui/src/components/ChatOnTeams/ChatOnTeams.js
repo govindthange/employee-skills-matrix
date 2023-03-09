@@ -3,14 +3,23 @@ import {ReactComponent as TeamsEnabled} from '../../teams.svg'
 import {ReactComponent as TeamsDisabled} from '../../teams-disabled.svg'
 export default function ChatOnTeams(props) {
 
-    console.log(props);
+   
 
-    const url = `https://teams.microsoft.com/l/chat/0/0?users=${props.value.officeEmailId}`
-    const teamIcon = props.value.officeEmailId !== "" ? TeamsEnabled : TeamsDisabled
+    const teamIcon = props.value.officeEmailId !== null ? TeamsEnabled : TeamsDisabled
+    const email = props.value.officeEmailId;
+    const attributes = {
+        target: "_blank",
+        disabled: true
+    }
+
+    if (email != null) {
+        attributes.href = `https://teams.microsoft.com/l/chat/0/0?users=${email}`
+        attributes.disabled = false
+    }
 
     
     return (
-        <IconButton target="_blank" href={url} disabled={false}>
+        <IconButton {...attributes}>
            <SvgIcon component={teamIcon} inheritViewBox />
         </IconButton>
     )
