@@ -50,7 +50,7 @@ function dataAfterFilter() {
   };
 
   const columns = [
-    { field: 'Chat',cellRenderer: ChatOnTeams, cellRendererparams: {email: this}, maxWidth: 80},
+    { field: 'Chat',cellRenderer: ChatOnTeams, valueGetter: (params) => ({officeEmailId: params.data.officeEmailId}), maxWidth: 80},
     { field: 'code', maxWidth: 100, filter: 'agNumberColumnFilter'},
     { field: 'name', filter: 'agTextColumnFilter' },
     { field: 'localtion', maxWidth: 150, filter: 'agTextColumnFilter' },
