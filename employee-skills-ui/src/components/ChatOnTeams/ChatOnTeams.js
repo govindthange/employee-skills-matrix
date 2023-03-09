@@ -3,9 +3,10 @@ import {ReactComponent as TeamsEnabled} from '../../teams.svg'
 import {ReactComponent as TeamsDisabled} from '../../teams-disabled.svg'
 export default function ChatOnTeams(props) {
 
+    console.log(props);
 
-    const url = `https://teams.microsoft.com/l/chat/0/0?users=${props.data.officeEmailId}`
-    const teamIcon = props.data.officeEmailId !== "" ? TeamsEnabled : TeamsDisabled
+    const url = `https://teams.microsoft.com/l/chat/0/0?users=${props.value.officeEmailId}`
+    const teamIcon = props.value.officeEmailId !== "" ? TeamsEnabled : TeamsDisabled
 
     
     return (

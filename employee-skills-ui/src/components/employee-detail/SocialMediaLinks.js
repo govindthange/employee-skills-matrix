@@ -1,8 +1,9 @@
 import { Button, Divider, Stack } from "@mui/material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import ChatOnTeams from "../ChatOnTeams/ChatOnTeams";
 
-function SocialMediaLink({githubUrl, linkedinUrl}) {
+function SocialMediaLink({githubUrl, linkedinUrl, officeEmailId}) {
     return (
         <Stack  direction="row"
         divider={<Divider orientation="vertical" flexItem />}
@@ -24,6 +25,8 @@ function SocialMediaLink({githubUrl, linkedinUrl}) {
             >
                 Linkedin
             </Button>
+
+            <ChatOnTeams value={officeEmailId}/>
         </Stack>
 
     )
