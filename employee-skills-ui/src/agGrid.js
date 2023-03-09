@@ -1,22 +1,23 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, } from 'react';
-import { InputAdornment, TextField } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import * as XLSX from 'xlsx';
+
 import { useSelector } from 'react-redux';
 import { LIGHT_THEME } from './redux/theme/themeConstants';
 import SearchIcon from '@mui/icons-material/Search';
+import { InputAdornment, TextField } from '@mui/material'
 
 import { connect } from 'react-redux';
 import { fetchEmployeeData } from './redux';
 import ChatOnTeams from './components/ChatOnTeams/ChatOnTeams';
 
-function App({employees, fetchEmployeeData}) {
-  // const [rowData, setRowData] = useState([]);
+function App({employees, fetchEmployeeData, sendDataToParent}) {
+
   const gridRef = useRef();
   const [gridApi, setGridApi] = useState(null);
   const rowData = useSelector(state => state.employee.employees)
+  let temp = [];
 
   const rows = [];
   rowData.forEach(row => {
@@ -32,7 +33,7 @@ function App({employees, fetchEmployeeData}) {
     })
     rows.push(r);
   })
-  let temp = [];
+
 
   useEffect(() => {
     fetchEmployeeData()
@@ -52,17 +53,9 @@ function App({employees, fetchEmployeeData}) {
 function dataAfterFilter() {
   gridApi.forEachNodeAfterFilter((rowNode) => {
     temp.push(rowNode.data)
+    sendDataToParent(temp)
   });
 }
-
-  const exportFilteredData = () => {
-    dataAfterFilter();
-    const filteredData = temp;
-    const worksheet = XLSX.utils.json_to_sheet(filteredData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Filtered Data');
-    XLSX.writeFile(workbook, 'filtered-data.xlsx');
-  };
 
   const columns = [
     { field: 'Chat',cellRenderer: ChatOnTeams, valueGetter: (params) => ({officeEmailId: params.data.officeEmailId}), maxWidth: 80},
@@ -97,8 +90,12 @@ function dataAfterFilter() {
 
   const onRowDoubleClicked = useCallback(() => {
     console.log("double click on row");
+    
   });
 
+  const onFilterChanged = () => {
+    dataAfterFilter();
+  };
 
   const theme = useSelector(state => state.theme.mode);
   const themeClassName = (theme === LIGHT_THEME) ?' ag-theme-alpine' : 'ag-theme-alpine-dark'
@@ -143,6 +140,7 @@ function dataAfterFilter() {
         rowSelection={'single'}
         pagination = {true} 
         onSelectionChanged={onSelectionChanged}
+        onFilterChanged={onFilterChanged}
         paginationPageSize = {50} />
       </div>
     </div>

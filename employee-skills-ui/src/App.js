@@ -13,34 +13,45 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import EmployeeDetailContainer from './components/employee-detail/EmployeeDetailContainer';
 import React from 'react';
 import { getThemeObj } from './utils/utils';
-
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <AgGrid />,
-  },
-  {
-    path:"/employee-details",
-    element: <EmployeeDetailContainer />
-  }
-]);
+import * as XLSX from 'xlsx';
 
 
 function App(props) {
 
-
   const actions = [
     { icon: <FileUploadIcon />, name: 'Upload CSV' },
-    { icon: <SaveIcon />, name: 'Download' },
+    { icon: <SaveIcon onClick= {() => exportFilteredData()}/>, name: 'Download',  },
   ];
-
 
   const mode = useSelector(state => state.theme.mode);
   const t = (mode === LIGHT_THEME) ? 'light' : 'dark';
 
   const themeColor = useSelector(state => state.theme.theme);
   const derivedTheme = getThemeObj(themeColor.primaryColor, themeColor.secondaryColor, t)
+  const [downloadData, setDownloadData] = React.useState();
+  const handleDataFromChild = (data) => {
+    setDownloadData(data);
+  }
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <AgGrid sendDataToParent={handleDataFromChild}/>,
+    },
+    {
+      path:"/employee-details",
+      element: <EmployeeDetailContainer />
+    }
+  ]);
+
+  const exportFilteredData = () => {
+    const filteredData = downloadData;
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Filtered Data');
+    XLSX.writeFile(workbook, 'filtered-data.xlsx');
+  };
+  
   return (
 
     <ThemeProvider theme={derivedTheme}>
@@ -64,7 +75,6 @@ function App(props) {
                 key={action.name}
                 icon={action.icon}
                 tooltipTitle={action.name}
-                
               />
             ))}
           </SpeedDial>
