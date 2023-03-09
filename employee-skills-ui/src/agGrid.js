@@ -17,6 +17,21 @@ function App({employees, fetchEmployeeData}) {
   const gridRef = useRef();
   const [gridApi, setGridApi] = useState(null);
   const rowData = useSelector(state => state.employee.employees)
+
+  const rows = [];
+  rowData.forEach(row => {
+    const r ={...row};
+    r.skills.forEach(skill => {
+      if (r[skill.tag] === undefined) {
+        r[skill.tag] = [];
+        r[skill.tag].push(skill.skill)
+      } else {
+        r[skill.tag].push(skill.skill)
+      }
+     
+    })
+    rows.push(r);
+  })
   let temp = [];
 
   useEffect(() => {
@@ -53,11 +68,20 @@ function dataAfterFilter() {
     { field: 'Chat',cellRenderer: ChatOnTeams, valueGetter: (params) => ({officeEmailId: params.data.officeEmailId}), maxWidth: 80},
     { field: 'code', maxWidth: 100, filter: 'agNumberColumnFilter'},
     { field: 'name', filter: 'agTextColumnFilter' },
-    { field: 'localtion', maxWidth: 150, filter: 'agTextColumnFilter' },
-    { field: 'designation', filter: 'agTextColumnFilter' },
-    { field: 'mobileNumber', filter: 'agTextColumnFilter' },
-    { field: 'githubUrl', filter: 'agTextColumnFilter' },
-    { field: 'linkedinUrl', filter: 'agTextColumnFilter' },
+    // { field: 'localtion', maxWidth: 150, filter: 'agTextColumnFilter' },
+    // { field: 'designation', filter: 'agTextColumnFilter' },
+    // { field: 'mobileNumber', filter: 'agTextColumnFilter' },
+    // { field: 'githubUrl', filter: 'agTextColumnFilter' },
+    // { field: 'linkedinUrl', filter: 'agTextColumnFilter' },
+    {field: "Operating System", filter: 'agTextColumnFilter' },
+    {field: "Architectural Styles", filter: 'agTextColumnFilter' },
+    {field: "Version Control", filter: 'agTextColumnFilter' },
+    {field: "Frameworks", filter: 'agTextColumnFilter' },
+    {field: "Languages", filter: 'agTextColumnFilter' },
+    {field: "Design Patterns", filter: 'agTextColumnFilter' },
+    {field: "Certified", filter: 'agTextColumnFilter' },
+    {field: "Course Completed", filter: 'agTextColumnFilter' },
+    {field: "Devops Ops", filter: 'agTextColumnFilter' },
     
   ];
 
@@ -110,7 +134,7 @@ function dataAfterFilter() {
       <div className={themeClassName} style={{ height: '74vh', width: '100%', marginBottom: '2rem'}} >
         <AgGridReact
         ref={gridRef}
-        rowData = {rowData}
+        rowData = {rows}
         onGridReady = {onGridReady}
         columnDefs = {columns}
         defaultColDef = {defaultColDef}
