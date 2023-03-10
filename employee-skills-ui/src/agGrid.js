@@ -1,19 +1,31 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, } from 'react';
-import { InputAdornment, TextField } from '@mui/material'
+import { Drawer, InputAdornment, TextField } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import * as XLSX from 'xlsx';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LIGHT_THEME } from './redux/theme/themeConstants';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { connect } from 'react-redux';
-import { fetchEmployeeData } from './redux';
+import { fetchEmployeeData, selectEmployee } from './redux';
 import ChatOnTeams from './components/ChatOnTeams/ChatOnTeams';
+import DetailRender from './components/employee-detail/DetailRenderer';
 
 function App({ employees, fetchEmployeeData }) {
   // const [rowData, setRowData] = useState([]);
+  const [drawerState, setDrawerState] = useState(false);
+  const toggleDrawer = (open) => (event)=> {
+    console.log("drawer", event, open);
+    // if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    //   return;
+    // }
+    console.log("draweriiiiii");
+    setDrawerState(open);
+  };
+
+
   const gridRef = useRef();
   const [gridApi, setGridApi] = useState(null);
   const rowData = useSelector(state => state.employee.employees)
@@ -126,7 +138,17 @@ function App({ employees, fetchEmployeeData }) {
 
   const onRowDoubleClicked = useCallback(() => {
     console.log("double click on row");
+    
   });
+
+  const dispatch = useDispatch();
+  const onRowClicked = useCallback(() => {
+   
+    const selectedRows = gridRef.current.api.getSelectedRows();
+    console.log(selectedRows);
+    dispatch(selectEmployee(selectedRows[0]));
+    setDrawerState(true);
+  })
 
 
   const theme = useSelector(state => state.theme.mode);
@@ -168,11 +190,19 @@ function App({ employees, fetchEmployeeData }) {
           columnDefs={columns}
           defaultColDef={defaultColDef}
           onRowDoubleClicked={onRowDoubleClicked}
+          onRowClicked={onRowClicked}
           animateRows={true}
           rowSelection={'single'}
           pagination={true}
           onSelectionChanged={onSelectionChanged}
           paginationPageSize={50} />
+           <Drawer
+            anchor="right"
+            open={drawerState}
+            onClose={toggleDrawer(false)}
+          >
+            <DetailRender />
+          </Drawer>
       </div>
     </div>
   );
