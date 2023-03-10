@@ -13,7 +13,7 @@ function DetailRender() {
     }
     
     return employee && Object.keys(employee).length > 0 ? (
-        <Paper svariant="elevation" sx={{ p: 2 }} elevation={2}>
+        <Paper svariant="elevation" sx={{ p: 2, overflow: 'auto', height: "85vh" }} elevation={2}>
             <Typography variant="h3" component="h2"> {employee.name}</Typography>
             <Chip icon={<CodeIcon />} label={employee.designation} sx={{ my: 2 }} />
             <Chip icon={<WorkOutlineIcon />} label={`${employee.yearsOfExperience} years`} sx={{ my: 2, mx: 2 }} />

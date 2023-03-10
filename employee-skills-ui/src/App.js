@@ -28,8 +28,6 @@ const router = createBrowserRouter([
 
 
 function App(props) {
-
-
   const actions = [
     { icon: <FileUploadIcon />, name: 'Upload CSV' },
     { icon: <SaveIcon />, name: 'Download' },
@@ -45,12 +43,12 @@ function App(props) {
 
     <ThemeProvider theme={derivedTheme}>
       <CssBaseline />
-      <Container maxWidth={false} sx={{ p: 0}} disableGutters={true}>
+      <Container maxWidth={false}  disableGutters={true}>
       <Navbar />
       <Container maxWidth={false} sx={{ pr: 20}}>
 
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={12} >
+        <Grid container spacing={2} >
+          <Grid item xs={12} md={12}>
           <RouterProvider router={router} />
           </Grid>
           <SpeedDial
@@ -64,10 +62,13 @@ function App(props) {
                 key={action.name}
                 icon={action.icon}
                 tooltipTitle={action.name}
-                
               />
             ))}
           </SpeedDial>
+          <input
+    type="file"
+    hidden
+  />
         </Grid>
       </Container>
       </Container>

@@ -69,7 +69,7 @@ function dataAfterFilter() {
     { field: 'code', maxWidth: 100, filter: 'agNumberColumnFilter'},
     { field: 'name', filter: 'agTextColumnFilter' },
     // { field: 'localtion', maxWidth: 150, filter: 'agTextColumnFilter' },
-    // { field: 'designation', filter: 'agTextColumnFilter' },
+    { field: 'designation', filter: 'agTextColumnFilter' },
     // { field: 'mobileNumber', filter: 'agTextColumnFilter' },
     // { field: 'githubUrl', filter: 'agTextColumnFilter' },
     // { field: 'linkedinUrl', filter: 'agTextColumnFilter' },
