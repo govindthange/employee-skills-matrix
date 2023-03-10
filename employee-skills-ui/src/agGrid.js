@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { fetchEmployeeData } from './redux';
 import ChatOnTeams from './components/ChatOnTeams/ChatOnTeams';
 
-function App({employees, fetchEmployeeData}) {
+function App({ employees, fetchEmployeeData }) {
   // const [rowData, setRowData] = useState([]);
   const gridRef = useRef();
   const [gridApi, setGridApi] = useState(null);
@@ -20,7 +20,7 @@ function App({employees, fetchEmployeeData}) {
 
   const rows = [];
   rowData.forEach(row => {
-    const r ={...row};
+    const r = { ...row };
     r.skills.forEach(skill => {
       if (r[skill.tag] === undefined) {
         r[skill.tag] = [];
@@ -28,7 +28,7 @@ function App({employees, fetchEmployeeData}) {
       } else {
         r[skill.tag].push(skill.skill)
       }
-     
+
     })
     rows.push(r);
   })
@@ -38,22 +38,33 @@ function App({employees, fetchEmployeeData}) {
     fetchEmployeeData()
   }, []);
 
-  const defaultColDef = {
+  const sideBar = useMemo(() => {
+    return {
+      toolPanels: ['columns'],
+    };
+  }, []);
+
+  const defaultColDef = useMemo(() =>{
+   return {
     flex: 1,
     filterParams: {
-      buttons: ['apply','clear','reset']
-    }
-  }
+      buttons: ['apply', 'clear', 'reset']
+    },
+    sortable: true,
+    resizable: true,
+    filter: true,
+   }
+  },[]);
 
   const onGridReady = (params) => {
     setGridApi(params.api);
   };
 
-function dataAfterFilter() {
-  gridApi.forEachNodeAfterFilter((rowNode) => {
-    temp.push(rowNode.data)
-  });
-}
+  function dataAfterFilter() {
+    gridApi.forEachNodeAfterFilter((rowNode) => {
+      temp.push(rowNode.data)
+    });
+  }
 
   const exportFilteredData = () => {
     dataAfterFilter();
@@ -65,21 +76,42 @@ function dataAfterFilter() {
   };
 
   const columns = [
-    { field: 'Chat',cellRenderer: ChatOnTeams, valueGetter: (params) => ({officeEmailId: params.data.officeEmailId}), maxWidth: 80},
-    { field: 'code', maxWidth: 100, filter: 'agNumberColumnFilter'},
-    { field: 'name', filter: 'agTextColumnFilter' },
-    { field: 'yearsOfExperience', headerName: 'Exp', maxWidth: 80, filter: 'agNumberColumnFilter' },
-    { field: 'designation', filter: 'agTextColumnFilter' },
-    {field: "Operating System", filter: 'agTextColumnFilter' },
-    {field: "Architectural Styles", filter: 'agTextColumnFilter' },
-    {field: "Version Control", filter: 'agTextColumnFilter' },
-    {field: "Frameworks", filter: 'agTextColumnFilter' },
-    {field: "Languages", filter: 'agTextColumnFilter' },
-    {field: "Design Patterns", filter: 'agTextColumnFilter' },
-    {field: "Certified", filter: 'agTextColumnFilter' },
-    {field: "Course Completed", filter: 'agTextColumnFilter' },
-    {field: "Devops Ops", filter: 'agTextColumnFilter' },
-    
+    {
+      headerName: "Employee Details",
+      children: [
+        { field: 'Chat', cellRenderer: ChatOnTeams, valueGetter: (params) => ({ officeEmailId: params.data.officeEmailId }), maxWidth: 100,},
+        { field: 'name', filter: 'agTextColumnFilter' },
+        { field: 'code', maxWidth: 100, filter: 'agNumberColumnFilter', columnGroupShow: 'open' },
+        { field: 'yearsOfExperience', headerName: 'Exp', maxWidth: 80, filter: 'agNumberColumnFilter', columnGroupShow: 'open' },
+        { field: 'designation', filter: 'agTextColumnFilter', columnGroupShow: 'open' },
+        { field: 'mobileNumber', filter: 'agTextColumnFilter', columnGroupShow: 'open' },
+        { field: 'githubUrl', filter: 'agTextColumnFilter', columnGroupShow: 'open' },
+        { field: 'linkedinUrl', filter: 'agTextColumnFilter', columnGroupShow: 'open' }
+      ]
+    },
+    {
+      headerName: "Skills",
+      children: [
+        { field: "Operating System", filter: 'agTextColumnFilter' },
+        { field: "Architectural Styles", filter: 'agTextColumnFilter', },
+        { field: "Version Control", filter: 'agTextColumnFilter' },
+        { field: "Frameworks", filter: 'agTextColumnFilter' },
+        { field: "Languages", filter: 'agTextColumnFilter' },
+        { field: "Design Patterns", filter: 'agTextColumnFilter' },
+        { field: "Certified", filter: 'agTextColumnFilter' },
+        { field: "Course Completed", filter: 'agTextColumnFilter' },
+        { field: "Devops Ops", filter: 'agTextColumnFilter' }
+      ]
+    },
+    {
+      headerName: "Social",
+      columnGroupShow: 'open',
+      children: [
+       
+      ]
+    }
+
+
   ];
 
   const onSelectionChanged = useCallback(() => {
@@ -98,7 +130,7 @@ function dataAfterFilter() {
 
 
   const theme = useSelector(state => state.theme.mode);
-  const themeClassName = (theme === LIGHT_THEME) ?' ag-theme-alpine' : 'ag-theme-alpine-dark'
+  const themeClassName = (theme === LIGHT_THEME) ? ' ag-theme-alpine' : 'ag-theme-alpine-dark'
 
   return employees.loading ? (
     <h2>Loading</h2>
@@ -107,8 +139,8 @@ function dataAfterFilter() {
   ) : (
 
     <div>
-      <div style={{ padding: '1rem 0em'}} >
-      <TextField
+      <div style={{ padding: '1rem 0em' }} >
+        <TextField
           fullWidth
           id="filter-text-box"
           label="search"
@@ -116,31 +148,31 @@ function dataAfterFilter() {
           onInput={onFilterTextBoxChanged}
           InputProps={{
             startAdornment: <InputAdornment position="start">
-                <SearchIcon color="secondary"/>
+              <SearchIcon color="secondary" />
             </InputAdornment>,
           }}
-      />
+        />
       </div>
-     
+
       {/* <input
             type="text"
             id="filter-text-box"
             placeholder="Filter..."
             // onInput={onFilterTextBoxChanged}
           /> */}
-      <div className={themeClassName} style={{ height: '74vh', width: '100%', marginBottom: '2rem'}} >
+      <div className={themeClassName} style={{ height: '74vh', width: '100%', marginBottom: '2rem' }} >
         <AgGridReact
-        ref={gridRef}
-        rowData = {rows}
-        onGridReady = {onGridReady}
-        columnDefs = {columns}
-        defaultColDef = {defaultColDef}
-        onRowDoubleClicked = {onRowDoubleClicked}
-        animateRows = {true}
-        rowSelection={'single'}
-        pagination = {true} 
-        onSelectionChanged={onSelectionChanged}
-        paginationPageSize = {50} />
+          ref={gridRef}
+          rowData={rows}
+          onGridReady={onGridReady}
+          columnDefs={columns}
+          defaultColDef={defaultColDef}
+          onRowDoubleClicked={onRowDoubleClicked}
+          animateRows={true}
+          rowSelection={'single'}
+          pagination={true}
+          onSelectionChanged={onSelectionChanged}
+          paginationPageSize={50} />
       </div>
     </div>
   );
