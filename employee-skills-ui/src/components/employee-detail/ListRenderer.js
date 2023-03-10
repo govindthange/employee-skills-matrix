@@ -30,7 +30,7 @@ function ListRendere({ employees }) {
 
     const empNameList = emplist.map((emp, index) => {
         return (
-            <div key={`${emp.name}-div-${index}`}>
+            <div key={`${emp.name}-div-${index}`}  >
 
                 <ListItemButton
                     selected={selectedIndex === index}
@@ -47,7 +47,7 @@ function ListRendere({ employees }) {
         );
     });
     return (
-        <Paper variant="elevation" sx={{p: 2}} elevation={2}>
+        <Paper variant="elevation" sx={{p: 2, height: "85vh"}} elevation={2}>
             <div style={{ padding: '1rem 0em' }} key="search-field">
                 <TextField
                     fullWidth
@@ -62,7 +62,7 @@ function ListRendere({ employees }) {
                       }}
                 />
             </div>
-            <List component="nav" >
+            <List component="nav" sx={{overflow: 'auto', height: '88%'}}>
                 {empNameList}
             </List>
         </Paper>

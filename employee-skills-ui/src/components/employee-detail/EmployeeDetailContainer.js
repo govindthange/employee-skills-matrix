@@ -18,7 +18,7 @@ function EmployeeDetailContainer() {
             <Box sx={{ flexGrow: 1, mt: 4 }}>
                 <Grid container spacing={2}>
                     <Grid xs={3}>
-                      <ListRendere employees={employees}/>
+                      <ListRendere employees={employees} />
                     </Grid>
                     <Grid xs={9}>
                         <DetailRender/>
