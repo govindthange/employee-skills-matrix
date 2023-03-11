@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, } from 'react';
-import { Drawer, InputAdornment, TextField } from '@mui/material'
+import { Drawer, InputAdornment, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -12,13 +12,14 @@ import { connect } from 'react-redux';
 import { fetchEmployeeData, selectEmployee } from './redux';
 import ChatOnTeams from './components/ChatOnTeams/ChatOnTeams';
 import DetailRender from './components/employee-detail/DetailRenderer';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import SaveIcon from '@mui/icons-material/Save';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 function App({ employees, fetchEmployeeData }) {
   const navigate = useNavigate();
   const [drawerState, setDrawerState] = useState(false);
   const toggleDrawer = (open) => (event)=> {
-    console.log("drawer", event, open);
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -45,6 +46,11 @@ function App({ employees, fetchEmployeeData }) {
     rows.push(r);
   })
   let temp = [];
+
+  const actions = [
+    { icon: <FileUploadIcon />, name: 'Upload CSV' },
+    { icon: <SaveIcon />, onClick: onDataExport, name: 'Download' },
+  ];
 
   useEffect(() => {
     fetchEmployeeData()
@@ -86,6 +92,10 @@ function App({ employees, fetchEmployeeData }) {
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Filtered Data');
     XLSX.writeFile(workbook, 'filtered-data.xlsx');
   };
+
+  function onDataExport() {
+    gridRef.current.api.exportDataAsCsv();
+  }
 
   const columns = [
     {
@@ -210,6 +220,22 @@ function App({ employees, fetchEmployeeData }) {
           >
             <DetailRender />
           </Drawer>
+
+          <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            sx={{ position: 'absolute', bottom: 16, right: 16,'& .MuiFab-primary': { backgroundColor: 'secondary.main' } }}
+            icon={<SpeedDialIcon />}
+            
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                onClick={action.onClick}
+                tooltipTitle={action.name}
+              />
+            ))}
+          </SpeedDial>
       </div>
     </div>
   );
