@@ -12,16 +12,16 @@ import { connect } from 'react-redux';
 import { fetchEmployeeData, selectEmployee } from './redux';
 import ChatOnTeams from './components/ChatOnTeams/ChatOnTeams';
 import DetailRender from './components/employee-detail/DetailRenderer';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function App({ employees, fetchEmployeeData }) {
-  // const [rowData, setRowData] = useState([]);
+  const navigate = useNavigate();
   const [drawerState, setDrawerState] = useState(false);
   const toggleDrawer = (open) => (event)=> {
     console.log("drawer", event, open);
-    // if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-    //   return;
-    // }
-    console.log("draweriiiiii");
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
     setDrawerState(open);
   };
 
@@ -137,18 +137,30 @@ function App({ employees, fetchEmployeeData }) {
   }, []);
 
   const onRowDoubleClicked = useCallback(() => {
-    console.log("double click on row");
-    
+    const selectedRows = gridRef.current.api.getSelectedRows();
+    dispatch(selectEmployee(selectedRows[0]));
+    navigate("/employee-details")
   });
 
   const dispatch = useDispatch();
   const onRowClicked = useCallback(() => {
-   
     const selectedRows = gridRef.current.api.getSelectedRows();
-    console.log(selectedRows);
     dispatch(selectEmployee(selectedRows[0]));
     setDrawerState(true);
-  })
+  });
+
+  const timer = useRef()
+  const handleClick = ({event}) => {
+    clearTimeout(timer.current);
+    switch (event.detail) {
+      case 1:
+        timer.current = setTimeout(onRowClicked, 200)
+        break;
+      case 2:
+        onRowDoubleClicked()
+        break;
+    }
+  };
 
 
   const theme = useSelector(state => state.theme.mode);
@@ -176,12 +188,7 @@ function App({ employees, fetchEmployeeData }) {
         />
       </div>
 
-      {/* <input
-            type="text"
-            id="filter-text-box"
-            placeholder="Filter..."
-            // onInput={onFilterTextBoxChanged}
-          /> */}
+    
       <div className={themeClassName} style={{ height: '74vh', width: '100%', marginBottom: '2rem' }} >
         <AgGridReact
           ref={gridRef}
@@ -189,8 +196,8 @@ function App({ employees, fetchEmployeeData }) {
           onGridReady={onGridReady}
           columnDefs={columns}
           defaultColDef={defaultColDef}
-          onRowDoubleClicked={onRowDoubleClicked}
-          onRowClicked={onRowClicked}
+          // onRowDoubleClicked={onRowDoubleClicked}
+          onRowClicked={handleClick}
           animateRows={true}
           rowSelection={'single'}
           pagination={true}
