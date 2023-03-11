@@ -1,10 +1,9 @@
-import { Avatar, Chip, Divider, Paper, Typography } from "@mui/material";
+import { Chip, Divider, Paper, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import CodeIcon from '@mui/icons-material/Code';
 import SocialMediaLink from "./SocialMediaLinks";
 import Skills from "./Skills";
-import { Stack } from "@mui/system";
 function DetailRender() {
     const employee = useSelector(state => state.employee.employee)
     const email ={}
