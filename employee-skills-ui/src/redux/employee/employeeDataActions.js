@@ -32,12 +32,10 @@ export const selectEmployee = employee => {
 
 export const fetchEmployeeData = () => {
     return (dispatch) => {
-        console.log("FETCH--------");
         dispatch(fetchEmployeeDataRequets);
         dispatch(progressbarAction());
         axios.get("/api/employee")
             .then(res => {
-                console.log(res.data.data);
                 dispatch(fetchEmployeeDataSuccess(res.data.data))
                 dispatch(progressbarAction());
             })
