@@ -3,13 +3,12 @@ import { Drawer, InputAdornment, SpeedDial, SpeedDialAction, SpeedDialIcon, Text
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import * as XLSX from 'xlsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { LIGHT_THEME } from './redux/theme/themeConstants';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { connect } from 'react-redux';
-import { fetchEmployeeData, selectEmployee } from './redux';
+import { fetchEmployeeData, selectEmployee, uploadEmployeeData } from './redux';
 import ChatOnTeams from './components/ChatOnTeams/ChatOnTeams';
 import DetailRender from './components/employee-detail/DetailRenderer';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +27,8 @@ function App({ employees, fetchEmployeeData }) {
 
 
   const gridRef = useRef();
+  const fileUploadRef = useRef();
+
   const [gridApi, setGridApi] = useState(null);
   const rowData = useSelector(state => state.employee.employees)
 
@@ -45,10 +46,19 @@ function App({ employees, fetchEmployeeData }) {
     })
     rows.push(r);
   })
-  let temp = [];
+
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      dispatch(uploadEmployeeData(e.target.files[0]))
+    }
+  }
+  const handleFileUpload = () => {
+    console.log("file upload clicked");
+    fileUploadRef.current.click();
+  };
 
   const actions = [
-    { icon: <FileUploadIcon />, name: 'Upload CSV' },
+    { icon: <FileUploadIcon />, onClick: handleFileUpload, name: 'Upload CSV' },
     { icon: <SaveIcon />, onClick: onDataExport, name: 'Download' },
   ];
 
@@ -76,21 +86,6 @@ function App({ employees, fetchEmployeeData }) {
 
   const onGridReady = (params) => {
     setGridApi(params.api);
-  };
-
-  function dataAfterFilter() {
-    gridApi.forEachNodeAfterFilter((rowNode) => {
-      temp.push(rowNode.data)
-    });
-  }
-
-  const exportFilteredData = () => {
-    dataAfterFilter();
-    const filteredData = temp;
-    const worksheet = XLSX.utils.json_to_sheet(filteredData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Filtered Data');
-    XLSX.writeFile(workbook, 'filtered-data.xlsx');
   };
 
   function onDataExport() {
@@ -173,6 +168,8 @@ function App({ employees, fetchEmployeeData }) {
   };
 
 
+
+
   const theme = useSelector(state => state.theme.mode);
   const themeClassName = (theme === LIGHT_THEME) ? ' ag-theme-alpine' : 'ag-theme-alpine-dark'
 
@@ -235,7 +232,10 @@ function App({ employees, fetchEmployeeData }) {
                 tooltipTitle={action.name}
               />
             ))}
+    
+           
           </SpeedDial>
+          <input ref={fileUploadRef} type="file" accept=".csv" hidden onChange={handleFileChange}/>
       </div>
     </div>
   );

@@ -46,3 +46,23 @@ export const fetchEmployeeData = () => {
             })
     }
 }
+
+export const uploadEmployeeData = (file) => {
+    return (dispatch) => {
+        dispatch(progressbarAction());
+        
+        const formData = new FormData();
+        formData.append("file",file);
+    
+        axios.post("/api/employee/upload-csv", formData, {
+            headers: {
+            'Content-Type': 'multipart/form-data'
+            }
+        }).then(res => {
+            dispatch(fetchEmployeeData())
+            
+        }).finally(() => {
+            dispatch(progressbarAction());
+        })
+    }
+}
