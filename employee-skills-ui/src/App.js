@@ -1,6 +1,5 @@
 import './App.css';
 import Navbar from './components/nav-bar/Navbar'
-import AgGrid from './agGrid'
 import { Container, Grid, ThemeProvider, CssBaseline} from '@mui/material';
 import { useSelector } from 'react-redux';
 import {  LIGHT_THEME } from './redux/theme/themeConstants';
@@ -11,6 +10,7 @@ import {
 import EmployeeDetailContainer from './components/employee-detail/EmployeeDetailContainer';
 import React from 'react';
 import { getThemeObj } from './utils/utils';
+import AgGrid from './components/empoyee-skills-table/agGrid';
 
 
 const router = createBrowserRouter([
