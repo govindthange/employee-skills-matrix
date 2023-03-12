@@ -3,7 +3,28 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import ChatOnTeams from "../ChatOnTeams/ChatOnTeams";
 
+const PLATFORM  = {
+    GITHUB: "https://github.com",
+    LINKEDIN: "https://www.linkedin.com/in"
+}
+
+const isUrlValid = (url, platform) => {
+    const tempUrl = url.toLowerCase();
+    const invalidText = ['n', 'no', 'na', 'not yet', 'not available', ''];
+    if(invalidText.includes(tempUrl)) {
+        return [false, ""];
+    } else {
+        if (tempUrl.includes("github.com") || tempUrl.includes("linkedin.com")) {
+            return [true, url];
+        } else {
+            return [true, `${platform}/${url}`];
+        }
+    }
+}
+
 function SocialMediaLink({githubUrl, linkedinUrl, officeEmailId}) {
+    const [isGitUrlvalid, validGitUrl] = isUrlValid(githubUrl, PLATFORM.GITHUB);
+    const [isLinkedinUrlvalid, validLinkedinUrl] = isUrlValid(linkedinUrl, PLATFORM.LINKEDIN);
     return (
         <Stack  direction="row"
         divider={<Divider orientation="vertical" flexItem />}
@@ -12,7 +33,8 @@ function SocialMediaLink({githubUrl, linkedinUrl, officeEmailId}) {
                 variant="text"
                 startIcon={<GitHubIcon />}
                 target="_blank"
-                href={githubUrl}
+                href={validGitUrl}
+                disabled={!isGitUrlvalid}
             >
                 Github
             </Button>
@@ -21,7 +43,8 @@ function SocialMediaLink({githubUrl, linkedinUrl, officeEmailId}) {
                 variant="text"
                 startIcon={<LinkedInIcon />}
                 target="_blank"
-                href={linkedinUrl}
+                href={validLinkedinUrl}
+                disabled={!isLinkedinUrlvalid}
             >
                 Linkedin
             </Button>
