@@ -51,7 +51,7 @@ function App({ employees, fetchEmployeeData }) {
   }
 
   const handleFileUpload = () => {
-    this.fileUploadRef.current.click();
+    fileUploadRef.current.click();
   };
 
   function onDataExport() {
