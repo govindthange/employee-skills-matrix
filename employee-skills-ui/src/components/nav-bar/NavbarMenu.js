@@ -1,25 +1,24 @@
-import { Button, Typography } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleIcon from '@mui/icons-material/People';
 
 const menus = [
-    { name: "Home",  path: "/"},
-    { name: "Employee",  path: "/employee-details"},
+    { name: "home", icon: <HomeIcon/>,  path: "/"},
+    { name: "employee", icon: <PeopleIcon/>,  path: "/employee-details"},
 ];
 
 function NavbarMenu() {
     return (
         <Box sx={{  display: { xs: 'none', md: 'flex'}, ml: 5}}>
         {menus.map((menu) => (
-          <Button
-            key={menu.name}
-            href={menu.path}
-            variant="text"
-            sx={{ my: 2, color: 'white', px: 2, pb: 1.5}}
+        <IconButton
+          key={menu.name}
+          sx={{ my: 2, color: 'white', px: 2, pb: 1.5}}
+          href={menu.path}
           >
-           <Typography variant="subtitle1" component="h2">
-            {menu.name}
-        </Typography>
-          </Button>
+          {menu.icon}
+        </IconButton>
         ))}
       </Box>
     )
