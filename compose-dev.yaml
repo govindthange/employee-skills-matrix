@@ -9,6 +9,7 @@ services:
       - POSTGRES_PASSWORD=admin
     volumes:
       - ~/docker-data/employee-skills-db:/var/lib/postgresql/data
+      - ./postgres/skills-matrix-schema.sql:/docker-entrypoint-initdb.d/skills-matrix-schema.sql
   
   service:
     container_name: employee-skills-service
