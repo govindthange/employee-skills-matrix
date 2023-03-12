@@ -1,9 +1,10 @@
-import { FETCH_EMPLOYEE_FAILURE, FETCH_EMPLOYEE_REQUEST, FETCH_EMPLOYEE_SUCCESS, SELECT_EMPLOYEE } from "./employeeDataTypes"
+import { FETCH_EMPLOYEE_FAILURE, FETCH_EMPLOYEE_REQUEST, FETCH_EMPLOYEE_SUCCESS, SELECT_EMPLOYEE, UPLOAD_EMPLOYEE_DATA } from "./employeeDataTypes"
 
 const initialState = {
     loading: false,
     employees: [],
-    error: ''
+    error: '',
+    file: null
 }
 
 const employeeReducer = (state = initialState, action) => {
@@ -29,6 +30,11 @@ const employeeReducer = (state = initialState, action) => {
             return {
                 ...state,
                 employee: action.payload
+            }
+        case UPLOAD_EMPLOYEE_DATA:
+            return {
+                ...state,
+                file: action.payload
             }
         default: return state
     }
