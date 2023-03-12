@@ -43,6 +43,7 @@ export const defaultColDefConst = {
 
 export const mappSkillsToRow = (rowData) => {
     const rows = [];
+    if (rowData === undefined) return rows;
     rowData.forEach(row => {
         const r = { ...row };
         r.skills.forEach(skill => {
