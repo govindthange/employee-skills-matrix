@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -10,9 +10,10 @@ In the project directory, you can run:
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
+```
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+```
 
 ### `npm test`
 
@@ -67,4 +68,44 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->
+
+
+# Steps To Install Docker CLI
+
+### `Prerequisite`
+```
+    1. sudo apt-get update
+	2. sudo apt-get install \
+    	ca-certificates \
+    	curl \
+    	gnupg \
+    	lsb-release
+    3. sudo mkdir -m 0755 -p /etc/apt/keyrings
+    4. echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+### `Install Docker Engine, containerd, and Docker Compose.`
+```
+    1. sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+### Note: If you face any installation related error run : 
+```
+sudo apt --fix-broken install
+```
+
+### `Installing Docker Desktop`
+
+    Now to install docker desktop we have to download latest DEB package, To download deb package click on the link mentioneds below:
+
+[Click here to download docker desktop](https://desktop.docker.com/linux/main/amd64/docker-desktop-4.17.0-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64)
+
+```
+    1. sudo apt-get update
+    2. sudo apt install gnome-terminal
+    3. cd Downloads
+    4. sudo dpkg -i <File name that you downloaded from above link>
+```
